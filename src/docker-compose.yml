@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Expose Nginx port 80 as port 3000 on the host
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "5555:5555" # Expose server port 5000
+    # volumes:
+    #   - /var/run/docker.sock:/var/run/docker.sock # Mount Docker socket
+    # command: sh -c "npm start && sleep infinity" # Ensure Node.js server keeps running
+
+  vm:
+    build:
+      context: ./vm
+      dockerfile: Dockerfile
+    ports:
+      - "1234:1234" # Expose server port 5000
+    depends_on:
+      - server
